@@ -3,175 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presensi UI - New Colors</title>
+    <title>Presensi UI - Suji Ima Internusa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
             --ios-blue: #007AFF;
             --bg-gradient: linear-gradient(180deg, #A8E6FF 0%, #FFFFFF 40%, #F2F5F9 100%);
-            /* Warna Baru */
-            --quote-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            --color-izin: #FF9500;   /* Oranye */
-            --color-saldo: #34C759;  /* Hijau */
-            --color-paypal: #5856D6; /* Ungu */
-            --color-aset: #FF2D55;   /* Pink/Merah */
+            --quote-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
         }
 
-        * {
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background: var(--bg-gradient);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
         }
 
         .iphone-screen {
-            width: 100%;
-            max-width: 414px;
-            position: relative;
-            padding-bottom: 120px;
+            width: 100%; max-width: 414px;
+            position: relative; padding-bottom: 140px;
         }
 
-        /* --- Status Bar --- */
+        /* Status Bar */
         .status-bar {
-            height: 44px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 25px;
-            font-size: 14px;
-            font-weight: 600;
+            height: 44px; display: flex; justify-content: space-between;
+            align-items: center; padding: 0 25px; font-size: 14px; font-weight: 600;
         }
 
-        .status-right {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .status-right { display: flex; align-items: center; gap: 8px; }
+        .signal-dots { display: flex; gap: 2px; }
+        .dot { width: 4px; height: 12px; background: #ddd; border-radius: 1px; }
+        .dot.active { background: #000; }
 
-        .signal-icon { display: flex; align-items: flex-end; gap: 1.5px; width: 18px; height: 12px; }
-        .signal-bar { width: 3px; background: #c5c5c5; border-radius: 0.5px; }
-        .signal-bar.active { background: #000; }
-        .bar1 { height: 35%; } .bar2 { height: 55%; } .bar3 { height: 80%; } .bar4 { height: 100%; }
-
-        .wifi-icon { width: 16px; height: 16px; fill: #000; }
-
-        .battery-container {
-            width: 24px; height: 11px; border: 1.2px solid rgba(0,0,0,0.3);
-            border-radius: 2.5px; position: relative; padding: 1px;
-        }
-        .battery-level { height: 100%; width: 92%; background: #000; border-radius: 1px; }
-        .battery-cap { width: 1.5px; height: 4px; background: rgba(0,0,0,0.3); position: absolute; right: -3px; top: 2.5px; }
-
-        /* --- Header --- */
+        /* Header */
         .header {
-            padding: 30px 25px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 25px; display: flex; justify-content: space-between; align-items: center;
         }
-
-        .welcome-text { color: #666; font-size: 14px; }
         .user-name { font-size: 22px; font-weight: 800; margin-top: 4px; }
-        
         .avatar {
-            width: 50px; height: 50px;
-            background: #9d81ff;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: bold; font-size: 18px;
+            width: 50px; height: 50px; background: #6366f1;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; color: white; font-weight: bold;
         }
 
-        /* --- Card --- */
+        /* Card Absen */
         .card {
-            background: white;
-            margin: 0 20px 20px;
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            background: white; margin: 0 20px 20px; border-radius: 24px;
+            padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
-
-        .card h3 { margin: 0 0 15px; font-size: 16px; }
-        
-        .presensi-info {
-            display: flex;
-            border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 15px;
-        }
-
+        .presensi-info { display: flex; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px; }
         .presensi-item { flex: 1; }
-        .presensi-item small { color: #999; display: block; margin-bottom: 5px; }
-        .presensi-item strong { font-size: 20px; color: #222; }
+        .presensi-item strong { font-size: 22px; color: #222; }
 
-        .more-btn {
-            text-align: center; padding-top: 15px;
-            color: var(--ios-blue); font-weight: 600; font-size: 14px;
-        }
-
-        /* --- Menu dengan Warna Baru --- */
-        .menu-section { padding: 0 20px; margin-top: 25px; }
+        /* Menu Section */
         .menu-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 15px; padding: 0 20px; margin-top: 10px;
         }
-
-        .menu-item { text-align: center; font-size: 11px; color: #555; font-weight: 600; }
-        
+        .menu-item { text-align: center; font-size: 12px; font-weight: 600; color: #444; }
         .icon-box {
-            aspect-ratio: 1/1; border-radius: 20px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px; margin-bottom: 8px;
-            color: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            aspect-ratio: 1/1; border-radius: 18px; display: flex;
+            align-items: center; justify-content: center; font-size: 22px;
+            color: white; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        /* --- Kata Mutiara dengan Warna Baru --- */
+        /* Quote */
         .quote-card {
-            margin: 30px 20px;
-            background: var(--quote-gradient);
-            padding: 22px;
-            border-radius: 20px;
-            color: white;
+            margin: 30px 20px; background: var(--quote-gradient);
+            padding: 25px; border-radius: 20px; color: white;
             font-style: italic; font-size: 14px; line-height: 1.6;
-            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.2);
-            position: relative;
+            box-shadow: 0 8px 20px rgba(30, 60, 114, 0.2);
         }
 
-        .quote-card::before {
-            content: '“';
-            position: absolute;
-            top: 5px; left: 10px;
-            font-size: 40px; opacity: 0.3;
-        }
-
-        /* --- Bottom Nav & Copyright --- */
+        /* Bottom Nav & Copyright */
         .bottom-container {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 414px;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid #eee;
+            position: fixed; bottom: 0; width: 100%; max-width: 414px;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            border-top: 1px solid #eee; text-align: center;
         }
-
-        .nav-bar {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0 5px;
-        }
-
-        .nav-item { text-align: center; font-size: 10px; color: #888; }
-        .nav-icon { font-size: 20px; margin-bottom: 3px; }
+        .nav-bar { display: flex; justify-content: space-around; padding: 10px 0; align-items: center; }
+        .nav-link { color: #888; font-size: 10px; text-decoration: none; }
+        .nav-link.active { color: var(--ios-blue); }
+        .nav-link i { font-size: 20px; display: block; margin-bottom: 2px; }
 
         .camera-btn {
-            width: 60px; height: 60px;
-            background: var(--ios-blue);
-            border-radius: 20px;
-            margin-top: -40px;
-            display:
+            width: 65px; height: 65px; background: var(--ios-blue);
+            border-radius: 22px; margin-top: -45px; display: flex;
+            align-items: center; justify-content: center; font-size: 26px;
+            color: white; border: 5px solid white; box-shadow: 0 8px 15px rgba(0,122,255,0.3);
+        }
+
+        .copyright { font-size: 10px; color: #aaa; padding: 5px 0 15px; }
+    </style>
+</head>
+<body>
+
+<div class="iphone-screen">
+    <div class="status-bar">
+        <span id="live-clock">00:00</span>
+        <div class="status-right">
+            <div class="signal-dots">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <div class="header">
+        <div>
+            <div style="color: #666; font-size: 14px;">Hallo Bos</div>
+            <div class="user-name">SUJIANTO <span style="font-weight:400; font-size:16px;">(Owner II)</span></div>
+        </div>
+        <div class="avatar">SJ</div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0; font-size:16px;">Presensi hari ini</h3>
+        <div class="presensi-info">
+            <div class="presensi-item">
+                <small style="color:#999;">Datang</small><br>
+                <strong id="arrival-time">00:00:00</strong>
+            </div>
+            <div class="presensi-item" style="text-align: right;">
+                <small style="color:#999;">Pulang</small><br>
+                <strong>—</strong>
+            </div>
+        </div>
+        <div style="text-align:center; color:var(--ios-blue); font-weight:600; padding-top:15px; font-size:14px; cursor:pointer;">Lebih Lanjut</div>
+    </div>
+
+    <div class="menu-grid">
+        <div class="menu-item">
+            <div class="icon-box" style="background:#FF9500;"><i class="fas fa-file-alt"></i></div>Izin
+        </div>
+        <div class="menu-item">
+            <div class="icon-box" style="background:#34C759;"><i class="fas fa-wallet"></i></div>Saldo
+        </div>
+        <div class="menu-item">
+            <div class="icon-box" style="background:#5856D6;"><i class="fab fa-paypal"></i></div>Paypall
+        </div>
+        <div class="menu-item">
+            <div class="icon-box" style="background:#FF2D55;"><i class="fas fa-boxes-stacked"></i></div>Aset
+        </div>
+    </div>
+
+    <div class="quote-card">
+        <i class="fas fa-quote-left" style="font-size: 20px; opacity: 0.3; display: block; margin-bottom: 10px;"></i>
+        "Hidup Lah Kamu Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan"
+    </div>
+
+    <div class="bottom-container">
+        <div class="nav-bar">
+            <a href="#" class="nav-link active"><i class="fas fa-home"></i>Beranda</a>
+            <a href="#" class="nav-link"><i class="fas fa-history"></i>Riwayat</a>
+            <div class="camera-btn"><i class="fas fa-camera"></i></div>
+            <a href="#" class="nav-link"><i class="fas fa-clock"></i>Shift</a>
+            <a href="#" class="nav-link"><i class="fas fa-user-circle"></i>Akun</a>
+        </div>
+        <div class="copyright">@2026 Presensi Suji Ima Internusa</div>
+    </div>
+</div>
+
+<script>
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        
+        document.getElementById('live-clock').innerText = h + ":" + m;
+        document.getElementById('arrival-time').innerText = h + ":" + m + ":" + s;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+
+</body>
+</html>
