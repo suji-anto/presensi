@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presensi</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f2f5f9;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(180deg, #4facfe, #00c6fb);
+    color: white;
+    padding: 20px;
+    padding-bottom: 60px;
+}
+
+.header .welcome {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.header .name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.avatar {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 42px;
+    height: 42px;
+    background: #6a5acd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Card */
+.card {
+    background: white;
+    margin: -40px 16px 16px;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.presensi {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.presensi div {
+    text-align: center;
+}
+
+.more {
+    margin-top: 12px;
+    text-align: center;
+    color: #00aaff;
+}
+
+/* Menu */
+.menu {
+    margin: 16px;
+}
+
+.menu h4 {
+    margin-bottom: 12px;
+}
+
+.menu-grid {
+    display: flex;
+    justify-content: space-around;
+}
+
+.menu-item {
+    text-align: center;
+}
+
+.icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.izin { background: #ff9800; }
+.tugas { background: #2196f3; }
+.apel { background: #7b1fa2; }
+.bantuan { background: #4caf50; }
+
+/* Quote */
+.quote {
+    margin: 16px;
+    background: #2196f3;
+    color: white;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid #ddd;
+    padding: 8px 0;
+}
+
+.bottom-nav div {
+    text-align: center;
+    font-size: 12px;
+    color: #777;
+}
+
+.camera {
+    width: 56px;
+    height: 56px;
+    background: #2196f3;
+    border-radius: 16px;
+    margin-top: -28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 22px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="welcome">Hallo Bos !</div>
+    <div class="name">SUJIANTO (Onw II) </div>
+    <div class="avatar">SJ</div>
+</div>
+
+<div class="card">
+    <h3>Presensi hari ini</h3>
+    <div class="presensi">
+        <div>
+            <small>Datang</small><br>
+            <strong>06:44:34</strong>
+        </div>
+        <div>
+            <small>Pulang</small><br>
+            <strong>-</strong>
+        </div>
+    </div>
+    <div class="more">Lebih Lanjut</div>
+</div>
+
+<div class="menu">
+    <h4>Menu</h4>
+    <div class="menu-grid">
+        <div class="menu-item">
+            <div class="icon izin">📋</div>
+            Izin
+        </div>
+        <div class="menu-item">
+            <div class="icon tugas">💼</div>
+            Tugas
+        </div>
+        <div class="menu-item">
+            <div class="icon apel">👤</div>
+            Apel
+        </div>
+        <div class="menu-item">
+            <div class="icon bantuan">❓</div>
+            Bantuan
+        </div>
+    </div>
+</div>
+
+<div class="quote">
+    Hidup itu penuh pilihan sulit, tapi tidak ada yang lebih sulit daripada harus menentukan mau makan apa hari ini...
+</div>
+
+<div style="height:80px"></div>
+
+<div class="bottom-nav">
+    <div>🏠<br>Beranda</div>
+    <div>🕓<br>Riwayat</div>
+    <div class="camera">📷</div>
+    <div>⏰<br>Shift</div>
+    <div>👤<br>Akun</div>
+</div>
+
+</body>
+</html>
