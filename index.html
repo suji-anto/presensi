@@ -1,218 +1,253 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Presensi</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone Presensi UI</title>
+    <style>
+        :root {
+            --ios-blue: #007AFF;
+            --bg-gradient: linear-gradient(180deg, #A8E6FF 0%, #FFFFFF 40%, #F2F5F9 100%);
+        }
 
-<style>
-* {
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-body {
-    margin: 0;
-    background: #f2f5f9;
-}
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
 
-/* Header */
-.header {
-    background: linear-gradient(180deg, #4facfe, #00c6fb);
-    color: white;
-    padding: 20px;
-    padding-bottom: 60px;
-}
+        /* Container Utama (Simulasi Layar iPhone) */
+        .iphone-screen {
+            width: 100%;
+            max-width: 414px; /* Ukuran lebar iPhone standar */
+            background: transparent;
+            position: relative;
+            padding-bottom: 100px;
+        }
 
-.header .welcome {
-    font-size: 14px;
-    opacity: 0.9;
-}
+        /* Status Bar & Dynamic Island */
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            font-size: 12px;
+            font-weight: 600;
+        }
 
-.header .name {
-    font-size: 20px;
-    font-weight: bold;
-}
+        .dynamic-island {
+            width: 110px;
+            height: 30px;
+            background: black;
+            border-radius: 20px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 11px;
+        }
 
-.avatar {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    width: 42px;
-    height: 42px;
-    background: #6a5acd;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
+        /* Header Section */
+        .header {
+            padding: 40px 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-/* Card */
-.card {
-    background: white;
-    margin: -40px 16px 16px;
-    border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
+        .welcome-text { color: #666; font-size: 14px; }
+        .user-name { font-size: 22px; font-weight: 800; margin-top: 4px; }
+        
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background: #9d81ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
 
-.card h3 {
-    margin-top: 0;
-}
+        /* Card Presensi */
+        .card {
+            background: white;
+            margin: 0 20px 20px;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
 
-.presensi {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-}
+        .card h3 { margin: 0 0 15px; font-size: 16px; color: #333; }
+        
+        .presensi-info {
+            display: flex;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
 
-.presensi div {
-    text-align: center;
-}
+        .presensi-item { flex: 1; }
+        .presensi-item small { color: #999; display: block; margin-bottom: 5px; }
+        .presensi-item strong { font-size: 20px; color: #222; }
 
-.more {
-    margin-top: 12px;
-    text-align: center;
-    color: #00aaff;
-}
+        .more-btn {
+            text-align: center;
+            padding-top: 15px;
+            color: var(--ios-blue);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
 
-/* Menu */
-.menu {
-    margin: 16px;
-}
+        /* Menu Grid */
+        .menu-section { padding: 0 20px; margin-top: 25px; }
+        .menu-section h4 { margin-bottom: 15px; color: #444; }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
 
-.menu h4 {
-    margin-bottom: 12px;
-}
+        .menu-item { text-align: center; font-size: 11px; color: #555; font-weight: 500; }
+        
+        .icon-box {
+            aspect-ratio: 1/1;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
 
-.menu-grid {
-    display: flex;
-    justify-content: space-around;
-}
+        /* Quote Section */
+        .quote-card {
+            margin: 30px 20px;
+            background: #4A90E2;
+            padding: 20px;
+            border-radius: 20px;
+            color: white;
+            position: relative;
+            font-style: italic;
+            font-size: 14px;
+            line-height: 1.6;
+        }
 
-.menu-item {
-    text-align: center;
-}
+        /* Copyright Text */
+        .copyright {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin: 10px 0 30px;
+        }
 
-.icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 20px;
-    margin-bottom: 6px;
-}
+        /* Bottom Navigation */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 414px;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 25px;
+            border-top: 1px solid #eee;
+        }
 
-.izin { background: #ff9800; }
-.tugas { background: #2196f3; }
-.apel { background: #7b1fa2; }
-.bantuan { background: #4caf50; }
+        .nav-item { text-align: center; font-size: 10px; color: #888; }
+        .nav-item.active { color: var(--ios-blue); }
+        .nav-icon { font-size: 20px; margin-bottom: 3px; }
 
-/* Quote */
-.quote {
-    margin: 18px;
-    background: #2196f3;
-    color: white;
-    padding: 18px;
-    border-radius: 14px;
-    font-size: 16px;
-}
-
-/* Bottom Nav */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: white;
-    display: flex;
-    justify-content: space-around;
-    border-top: 1px solid #ddd;
-    padding: 8px 0;
-}
-
-.bottom-nav div {
-    text-align: center;
-    font-size: 12px;
-    color: #777;
-}
-
-.camera {
-    width: 56px;
-    height: 56px;
-    background: #2196f3;
-    border-radius: 16px;
-    margin-top: -28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 22px;
-}
-</style>
+        .camera-btn {
+            width: 60px;
+            height: 60px;
+            background: var(--ios-blue);
+            border-radius: 20px;
+            margin-top: -40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+            border: 4px solid white;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="header">
-    <div class="welcome">Hallo Bos</div>
-    <div class="name">SUJIANTO (Owner II) </div>
-    <div class="avatar">SJ</div>
-</div>
-
-<div class="card">
-    <h3>Presensi hari ini</h3>
-    <div class="presensi">
-        <div>
-            <small>Datang</small><br>
-            <strong>06:12:34</strong>
-        </div>
-        <div>
-            <small>Pulang</small><br>
-            <strong>-</strong>
+<div class="iphone-screen">
+    <div class="status-bar">
+        <span>8:27</span>
+        <div class="dynamic-island"></div>
+        <div style="display: flex; gap: 5px;">
+            <span>📶</span>
+            <span>🔋 92%</span>
         </div>
     </div>
-    <div class="more">Lebih Lanjut</div>
-</div>
 
-<div class="menu">
-    <h4>Menu</h4>
-    <div class="menu-grid">
-        <div class="menu-item">
-            <div class="icon izin">📋</div>
-            Izin
+    <div class="header">
+        <div>
+            <div class="welcome-text">Hallo Bos</div>
+            <div class="user-name">SUJIANTO <span style="font-weight: 400; font-size: 16px;">(Owner II)</span></div>
         </div>
-        <div class="menu-item">
-            <div class="icon tugas">💼</div>
-            Saldo
+        <div class="avatar">SJ</div>
+    </div>
+
+    <div class="card">
+        <h3>Presensi hari ini</h3>
+        <div class="presensi-info">
+            <div class="presensi-item">
+                <small>Datang</small>
+                <strong>06:12:34</strong>
+            </div>
+            <div class="presensi-item" style="text-align: right;">
+                <small>Pulang</small>
+                <strong>—</strong>
+            </div>
         </div>
-        <div class="menu-item">
-            <div class="icon apel">👤</div>
-            paypall
-        </div>
-        <div class="menu-item">
-            <div class="icon bantuan">❓</div>
-            aset
+        <div class="more-btn">Lebih Lanjut</div>
+    </div>
+
+    <div class="menu-section">
+        <h4>Menu</h4>
+        <div class="menu-grid">
+            <div class="menu-item"><div class="icon-box" style="background: #FF9F0A;">📋</div>Izin</div>
+            <div class="menu-item"><div class="icon-box" style="background: #007AFF;">💼</div>Saldo</div>
+            <div class="menu-item"><div class="icon-box" style="background: #AF52DE;">👤</div>Paypall</div>
+            <div class="menu-item"><div class="icon-box" style="background: #34C759;">❓</div>Aset</div>
         </div>
     </div>
-</div>
 
-<div class="quote">
-    Hidup Lah Kamu Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan 
-</div>
+    <div class="quote-card">
+        "Hidup Lah Kamu Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan"
+    </div>
 
-<div style="height:90px"></div>
+    <div class="copyright">
+        @2026 Presensi Suji Ima Internusa
+    </div>
 
-<div class="bottom-nav">
-    <div>🏠<br>Beranda</div>
-    <div>🕓<br>Riwayat</div>
-    <div class="camera">📷</div>
-    <div>⏰<br>Shift</div>
-    <div>👤<br>Akun</div>
+    <div class="nav-bar">
+        <div class="nav-item active"><div class="nav-icon">🏠</div>Beranda</div>
+        <div class="nav-item"><div class="nav-icon">🕒</div>Riwayat</div>
+        <div class="camera-btn">📷</div>
+        <div class="nav-item"><div class="nav-icon">⏰</div>Shift</div>
+        <div class="nav-item"><div class="nav-icon">👤</div>Akun</div>
+    </div>
 </div>
 
 </body>
