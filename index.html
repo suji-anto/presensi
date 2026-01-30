@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presensi UI Suji - Lokasi Aktif</title>
+    <title>Presensi UI Suji - Dynamic Quote</title>
     <style>
         :root {
             --ios-blue: #007AFF;
@@ -14,23 +14,31 @@
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
 
         body {
-            margin: 0; background: var(--bg-gradient);
-            display: flex; justify-content: center; min-height: 100vh;
+            margin: 0; background: #A8E6FF; background: var(--bg-gradient);
+            display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden;
         }
 
         .iphone-screen {
-            width: 100%; max-width: 414px; position: relative; padding-bottom: 120px;
+            width: 100%; max-width: 414px; position: relative; padding-bottom: 120px; min-height: 100vh;
+        }
+
+        /* --- DYNAMIC ISLAND --- */
+        .dynamic-island {
+            position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+            width: 110px; height: 30px; background: #000; border-radius: 20px; z-index: 1001;
         }
 
         /* --- Status Bar --- */
         .status-bar {
             height: 44px; display: flex; justify-content: space-between;
             align-items: center; padding: 0 25px; font-weight: 600; font-size: 14px;
+            position: relative; z-index: 1000;
         }
         .status-right { display: flex; align-items: center; gap: 6px; }
         .bars { display: flex; align-items: flex-end; gap: 1.5px; }
-        .bar { width: 3px; background: #c5c5c5; border-radius: 0.5px; }
-        .bar.active { background: #000; }
+        .bar { width: 3px; background: rgba(0,0,0,0.1); border-radius: 0.5px; }
+        .bar.active { background: #000; } /* Sinyal 1 Bar */
+
         .wifi-svg { width: 18px; height: 14px; fill: #000; }
         .bat-container { width: 22px; height: 11px; border: 1.1px solid #000; border-radius: 2.5px; position: relative; padding: 1px; }
         .bat-level { height: 100%; width: 90%; background: #000; border-radius: 1px; }
@@ -44,7 +52,7 @@
             border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;
         }
 
-        /* --- Card Presensi + Lokasi --- */
+        /* --- Card Presensi --- */
         .card {
             background: white; margin: 0 20px 20px; border-radius: 24px;
             padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
@@ -70,18 +78,18 @@
         }
         .icon-box svg { width: 24px; height: 24px; fill: white; }
 
-        /* --- Kata Mutiara (Jumbo) --- */
+        /* --- Quote Card --- */
         .quote-card {
             margin: 30px 20px; background: var(--quote-bg);
             padding: 28px 22px; border-radius: 26px; color: #263238;
             font-style: italic; font-size: 17px; font-weight: 700; text-align: center;
-            border: 2px solid #81D4FA; box-shadow: 0 6px 20px rgba(0,122,255,0.1);
+            border: 2px solid #81D4FA; min-height: 100px; display: flex; align-items: center; justify-content: center;
         }
 
         /* --- Nav Bawah --- */
         .bottom-container {
             position: fixed; bottom: 0; width: 100%; max-width: 414px;
-            background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-top: 1px solid #eee;
+            background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-top: 1px solid #eee; z-index: 1002;
         }
         .nav-bar { display: flex; justify-content: space-around; align-items: center; padding: 10px 0 25px; }
         .nav-item { text-align: center; font-size: 10px; color: #8E8E93; text-decoration: none; font-weight: 600; flex: 1; }
@@ -95,24 +103,30 @@
             box-shadow: 0 5px 15px rgba(0,122,255,0.3);
         }
         .camera-btn svg { fill: white; width: 28px; height: 28px; }
-
         .copyright { font-size: 10px; color: #bbb; text-align: center; padding-bottom: 10px; margin-top: -10px; }
     </style>
 </head>
 <body>
 
 <div class="iphone-screen">
+    <div class="dynamic-island"></div>
+
     <div class="status-bar">
         <span id="top-time">--:--</span>
         <div class="status-right">
-            <div class="bars"><div class="bar active" style="height:4px"></div><div class="bar" style="height:6px"></div><div class="bar" style="height:9px"></div><div class="bar" style="height:12px"></div></div>
+            <div class="bars">
+                <div class="bar active" style="height:4px"></div>
+                <div class="bar" style="height:6px"></div>
+                <div class="bar" style="height:9px"></div>
+                <div class="bar" style="height:12px"></div>
+            </div>
             <svg class="wifi-svg" viewBox="0 0 24 24"><path d="M12,2C7.3,2,3.1,3.9,0,7l2,2c2.6-2.6,6.1-4.1,10-4.1s7.4,1.5,10,4.1l2-2C20.9,3.9,16.7,2,12,2z M12,7c-3.5,0-6.6,1.4-8.9,3.7 l2,2C6.9,11.1,9.3,10,12,10s5.1,1.1,6.9,2.7l2-2C18.6,8.4,15.5,7,12,7z M12,12c-2.3,0-4.3,0.9-5.8,2.4l2,2 c1-1,2.3-1.6,3.8-1.6s2.8,0.6,3.8,1.6l2-2C16.3,12.9,14.3,12,12,12z M12,17c-1,0-1.9,0.4-2.6,1.1l2.6,2.6l2.6-2.6 C13.9,17.4,13,17,12,17z"/></svg>
             <div class="bat-container"><div class="bat-level"></div><div class="bat-tip"></div></div>
         </div>
     </div>
 
     <div class="header">
-        <div><div style="color:#888; font-size:13px;">Assalamualaikum...</div><div class="user-name">SUJIANTO <small style="font-weight:400">(Owner II)</small></div></div>
+        <div><div style="color:#888; font-size:13px;">Hallo Bos</div><div class="user-name">SUJIANTO <small style="font-weight:400">(Owner II)</small></div></div>
         <div class="avatar">SJ</div>
     </div>
 
@@ -125,18 +139,18 @@
         
         <div class="location-box">
             <svg viewBox="0 0 24 24"><path d="M12,2C8.1,2,5,5.1,5,9c0,5.2,7,13,7,13s7-7.8,7-13C19,5.1,15.9,2,12,2z M12,11.5c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5 s2.5,1.1,2.5,2.5S13.4,11.5,12,11.5z"/></svg>
-            <span id="txt-lokasi">Area Hutan Napis lot/lat</span>
+            <span id="txt-lokasi">Mencari Lokasi GPS...</span>
         </div>
     </div>
 
     <div class="menu-grid">
-        <div class="menu-item"><div class="icon-box" style="background:#FF9500;"><svg viewBox="0 0 24 24"><path d="M14,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8L14,2z M16,18H8v-2h8V18z M16,14H8v-2h8V14z"/></svg></div>Tugas</div>
+        <div class="menu-item"><div class="icon-box" style="background:#FF9500;"><svg viewBox="0 0 24 24"><path d="M14,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8L14,2z M16,18H8v-2h8V18z M16,14H8v-2h8V14z"/></svg></div>Izin</div>
         <div class="menu-item"><div class="icon-box" style="background:#34C759;"><svg viewBox="0 0 24 24"><path d="M21,18v1c0,1.1-0.9,2-2,2H5c-1.1,0-2-0.9-2-2V5c0-1.1,0.9-2,2-2h14c1.1,0,2,0.9,2,2v1h-9c-1.1,0-2,0.9-2,2v8c0,1.1,0.9,2,2,2H21z"/></svg></div>Saldo</div>
         <div class="menu-item"><div class="icon-box" style="background:#5856D6;"><svg viewBox="0 0 24 24"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18z"/></svg></div>Paypall</div>
         <div class="menu-item"><div class="icon-box" style="background:#FF2D55;"><svg viewBox="0 0 24 24"><path d="M20,6h-8l-2-2H4C2.9,4,2,4.9,2,6v12c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V8C22,6.9,21.1,6,20,6z"/></svg></div>Aset</div>
     </div>
 
-    <div class="quote-card">"Hiduplah Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan"</div>
+    <div class="quote-card" id="quote-display">"Memuat kata mutiara..."</div>
 
     <div class="bottom-container">
         <div class="nav-bar">
@@ -151,38 +165,54 @@
 </div>
 
 <script>
-    // Update Jam
+    // Daftar Quotes Bos
+    const quotes = [
+        "Hidup Lah Kamu Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan",
+        "Pekerjaan hebat tidak dilakukan dengan kekuatan, tapi dengan ketekunan.",
+        "Jangan menunggu kesempatan, ciptakanlah kesempatan itu sendiri.",
+        "Kesuksesan berawal dari keputusan untuk mencoba.",
+        "Tetaplah rendah hati meski sudah di puncak, tetaplah semangat meski di dalam hutan.",
+        "Waktu adalah aset terbaikmu, gunakanlah dengan bijak hari ini."
+    ];
+
     function updateClock() {
         const now = new Date();
-        document.getElementById('top-time').innerText = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
-        document.getElementById('live-arrival').innerText = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0') + ":" + String(now.getSeconds()).padStart(2, '0');
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('top-time').innerText = h + ":" + m;
+        document.getElementById('live-arrival').innerText = h + ":" + m + ":" + s;
     }
 
-    // Ambil Lokasi Otomatis (Dibuat agar tidak menimpa teks instruksi Anda)
-    function getLocation() {
+    function getGPSLocation() {
         const txt = document.getElementById('txt-lokasi');
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
-                    const lat = pos.coords.latitude.toFixed(4);
-                    const lon = pos.coords.longitude.toFixed(4);
-                    // Menampilkan input Anda diikuti koordinat asli
-                    txt.innerText = "Area Hutan Napis " + lat + "/" + lon;
-                    txt.style.color = "#34C759";
+                    const lat = pos.coords.latitude.toFixed(6);
+                    const lon = pos.coords.longitude.toFixed(6);
+                    txt.innerText = "Area Hutan Napis " + lat + " / " + lon;
                 },
                 (err) => {
-                    // Tetap menampilkan teks instruksi jika GPS gagal
-                    txt.innerText = "Area Hutan Napis lot/lat";
-                    txt.style.color = "#FF3B30";
+                    txt.innerText = "Area Hutan Napis (Low Signal)";
                 }
             );
         }
     }
 
+    // Fungsi Ganti Quote Otomatis
+    function setRandomQuote() {
+        const display = document.getElementById('quote-display');
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        display.innerText = `"${quotes[randomIndex]}"`;
+    }
+
     setInterval(updateClock, 1000);
+    
     window.onload = () => {
         updateClock();
-        getLocation();
+        getGPSLocation();
+        setRandomQuote(); // Ganti quote saat web dibuka
     };
 </script>
 </body>
