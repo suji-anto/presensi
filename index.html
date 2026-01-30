@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presensi UI</title>
+    <title>Presensi UI - iPhone Style</title>
     <style>
         :root {
             --ios-blue: #007AFF;
@@ -29,23 +29,73 @@
             width: 100%;
             max-width: 414px;
             position: relative;
-            padding-bottom: 120px; /* Ruang ekstra untuk nav + copyright */
+            padding-bottom: 120px;
         }
 
-        /* Status Bar (Tanpa Dynamic Island) */
+        /* --- Custom iOS Status Bar --- */
         .status-bar {
             height: 44px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 25px;
-            font-size: 12px;
+            padding: 0 20px;
+            font-size: 14px;
             font-weight: 600;
+            color: #000;
         }
 
-        /* Header */
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Sinyal 1 Bar */
+        .signal-icon {
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5px;
+            width: 18px;
+            height: 12px;
+        }
+        .signal-bar { width: 3px; background: #ddd; border-radius: 0.5px; }
+        .signal-bar.active { background: #000; }
+        .bar1 { height: 30%; }
+        .bar2 { height: 50%; }
+        .bar3 { height: 75%; }
+        .bar4 { height: 100%; }
+
+        /* Wi-Fi Icon */
+        .wifi-icon { width: 16px; height: 16px; }
+
+        /* Battery Icon */
+        .battery-container {
+            width: 24px;
+            height: 11px;
+            border: 1px solid rgba(0,0,0,0.35);
+            border-radius: 2.5px;
+            position: relative;
+            padding: 1px;
+        }
+        .battery-level {
+            height: 100%;
+            width: 90%;
+            background: #000;
+            border-radius: 1px;
+        }
+        .battery-cap {
+            width: 1.5px;
+            height: 4px;
+            background: rgba(0,0,0,0.35);
+            position: absolute;
+            right: -3px;
+            top: 3px;
+            border-radius: 0 1px 1px 0;
+        }
+
+        /* --- Header & Content --- */
         .header {
-            padding: 30px 25px 20px;
+            padding: 20px 25px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -62,7 +112,6 @@
             color: white; font-weight: bold; font-size: 18px;
         }
 
-        /* Card */
         .card {
             background: white;
             margin: 0 20px 20px;
@@ -88,7 +137,6 @@
             color: var(--ios-blue); font-weight: 600; font-size: 14px;
         }
 
-        /* Menu */
         .menu-section { padding: 0 20px; margin-top: 25px; }
         .menu-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
@@ -103,7 +151,6 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        /* Quote */
         .quote-card {
             margin: 30px 20px;
             background: #4A90E2;
@@ -113,7 +160,7 @@
             font-style: italic; font-size: 14px; line-height: 1.6;
         }
 
-        /* Fixed Bottom Nav & Copyright */
+        /* --- Footer & Nav --- */
         .bottom-container {
             position: fixed;
             bottom: 0;
@@ -122,13 +169,12 @@
             background: rgba(255,255,255,0.9);
             backdrop-filter: blur(10px);
             border-top: 1px solid #eee;
-            padding-top: 10px;
         }
 
         .nav-bar {
             display: flex;
             justify-content: space-around;
-            padding-bottom: 5px;
+            padding: 10px 0 5px;
         }
 
         .nav-item { text-align: center; font-size: 10px; color: #888; }
@@ -149,8 +195,7 @@
             text-align: center;
             font-size: 10px;
             color: #aaa;
-            padding: 10px 0 15px;
-            background: #fff;
+            padding: 5px 0 15px;
         }
     </style>
 </head>
@@ -159,79 +204,12 @@
 <div class="iphone-screen">
     <div class="status-bar">
         <span id="current-time-status">00:00</span>
-        <div style="display: flex; gap: 5px;">
-            <span>📶</span>
-            <span>🔋 92%</span>
-        </div>
-    </div>
-
-    <div class="header">
-        <div>
-            <div class="welcome-text">Hallo Bos</div>
-            <div class="user-name">SUJIANTO <span style="font-weight: 400; font-size: 16px;">(Owner II)</span></div>
-        </div>
-        <div class="avatar">SJ</div>
-    </div>
-
-    <div class="card">
-        <h3>Presensi hari ini</h3>
-        <div class="presensi-info">
-            <div class="presensi-item">
-                <small>Datang</small>
-                <strong id="jam-datang">00:00:00</strong>
+        <div class="status-right">
+            <div class="signal-icon">
+                <div class="signal-bar bar1 active"></div>
+                <div class="signal-bar bar2"></div>
+                <div class="signal-bar bar3"></div>
+                <div class="signal-bar bar4"></div>
             </div>
-            <div class="presensi-item" style="text-align: right;">
-                <small>Pulang</small>
-                <strong>—</strong>
-            </div>
-        </div>
-        <div class="more-btn">Lebih Lanjut</div>
-    </div>
-
-    <div class="menu-section">
-        <div class="menu-grid">
-            <div class="menu-item"><div class="icon-box" style="background: #FF9F0A;">📋</div>Izin</div>
-            <div class="menu-item"><div class="icon-box" style="background: #007AFF;">💼</div>Saldo</div>
-            <div class="menu-item"><div class="icon-box" style="background: #AF52DE;">👤</div>Paypall</div>
-            <div class="menu-item"><div class="icon-box" style="background: #34C759;">❓</div>Aset</div>
-        </div>
-    </div>
-
-    <div class="quote-card">
-        "Hidup Lah Kamu Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan"
-    </div>
-</div>
-
-<div class="bottom-container">
-    <div class="nav-bar">
-        <div class="nav-item" style="color: #007AFF;"><div class="nav-icon">🏠</div>Beranda</div>
-        <div class="nav-item"><div class="nav-icon">🕒</div>Riwayat</div>
-        <div class="camera-btn">📷</div>
-        <div class="nav-item"><div class="nav-icon">⏰</div>Shift</div>
-        <div class="nav-item"><div class="nav-icon">👤</div>Akun</div>
-    </div>
-    <div class="copyright">
-        @2026 Presensi Suji Ima Internusa
-    </div>
-</div>
-
-<script>
-    function updateClock() {
-        const now = new Date();
-        
-        // Format Jam:Menit untuk Status Bar
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        document.getElementById('current-time-status').textContent = `${hours}:${minutes}`;
-
-        // Format Jam:Menit:Detik untuk Jam Datang
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById('jam-datang').textContent = `${hours}:${minutes}:${seconds}`;
-    }
-
-    // Jalankan saat pertama kali dibuka
-    updateClock();
-</script>
-
-</body>
-</html>
+            <svg class="wifi-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21l-12-11.654c1.041-1.042 3.254-2.846 12-2.846 8.746 0 10.959 1.804 1
