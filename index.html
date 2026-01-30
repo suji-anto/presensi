@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presensi UI Suji - Smart Timer</title>
+    <title>Presensi UI Suji - Double Step</title>
     <style>
         :root {
             --ios-blue: #007AFF;
@@ -73,7 +73,6 @@
         }
         .icon-box svg { width: 24px; height: 24px; fill: white; }
 
-        /* --- Quote Card --- */
         .quote-card {
             margin: 30px 20px; background: var(--quote-bg);
             padding: 25px; border-radius: 26px; color: #263238;
@@ -164,14 +163,11 @@
     const quotes = [
         "Bersyukur bukan karena semua baik, tapi karena ada kebaikan di setiap hal.",
         "Disiplin adalah jembatan antara cita-cita dan pencapaian.",
-        "Semangat bukan saat di puncak, tapi saat bangkit meski sedang jatuh.",
-        "Kunci keberhasilan adalah fokus pada tujuan, bukan hambatan.",
-        "Bahagia itu sederhana: bersyukur atas apa yang kita miliki.",
-        "Jadilah lebih baik dari dirimu yang kemarin.",
-        "Niatkan langkahmu sebagai ibadah, maka lelahmu menjadi lillah."
+        "Niatkan langkahmu sebagai ibadah, maka lelahmu menjadi lillah.",
+        "Hargai setiap detik waktumu, karena ia tidak akan pernah kembali."
     ];
 
-    let isCheckedOut = false;
+    let clickState = 0; // 0: Awal, 1: Datang Stop, 2: Pulang Jalan
 
     function updateTick() {
         const now = new Date();
@@ -179,36 +175,37 @@
                         String(now.getMinutes()).padStart(2, '0') + ":" + 
                         String(now.getSeconds()).padStart(2, '0');
         
-        // Update Jam Atas
         document.getElementById('top-time').innerText = timeStr.substring(0, 5);
 
-        if (!isCheckedOut) {
-            // Jika belum check-out, jam Datang yang jalan
+        if (clickState === 0) {
+            // Jam datang jalan
             document.getElementById('time-arrival').innerText = timeStr;
-        } else {
-            // Jika sudah check-out, jam Pulang yang jalan
+        } else if (clickState === 2) {
+            // Jam pulang jalan
             document.getElementById('time-departure').innerText = timeStr;
         }
     }
 
-    // Fungsi saat Tombol Kamera ditekan
     document.getElementById('main-action-btn').onclick = function() {
-        if (!isCheckedOut) {
-            isCheckedOut = true;
-            
-            // Ubah tampilan UI
-            const arrivalTxt = document.getElementById('time-arrival');
-            const departureTxt = document.getElementById('time-departure');
-            
+        const arrivalTxt = document.getElementById('time-arrival');
+        const departureTxt = document.getElementById('time-departure');
+
+        if (clickState === 0) {
+            // TEKAN PERTAMA: Datang Berhenti
+            clickState = 1;
             arrivalTxt.classList.remove('active-timer');
-            arrivalTxt.style.color = "#1c1c1e"; // Kunci warna datang
-            
+            arrivalTxt.style.color = "#1c1c1e"; 
+            alert("Waktu Datang Dikunci. Tekan lagi nanti untuk mulai Pulang.");
+        } 
+        else if (clickState === 1) {
+            // TEKAN KEDUA: Pulang Berjalan
+            clickState = 2;
             departureTxt.classList.add('active-timer');
-            departureTxt.style.color = "#007AFF"; // Nyalakan warna pulang
-            
-            alert("Presensi Pulang Dimulai!");
-        } else {
-            alert("Presensi hari ini sudah selesai, Bos!");
+            departureTxt.style.color = "#007AFF";
+            alert("Waktu Pulang Dimulai!");
+        }
+        else {
+            alert("Presensi hari ini sudah selesai!");
         }
     };
 
