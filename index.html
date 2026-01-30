@@ -14,34 +14,32 @@
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
 
         body {
-            margin: 0; background: var(--bg-gradient);
+            margin: 0; background: var(--bg-gradient); /* Background Biru Kembali */
             display: flex; justify-content: center; min-height: 100vh;
         }
 
         .iphone-screen {
             width: 100%; max-width: 414px; position: relative; padding-bottom: 120px;
-            background: #fff; overflow: hidden;
         }
 
-        /* --- Dynamic Island --- */
-        .dynamic-island-container {
-            position: absolute; top: 11px; left: 50%;
-            transform: translateX(-50%); width: 100%;
-            display: flex; justify-content: center; z-index: 1000;
-        }
+        /* --- DYNAMIC ISLAND (Murni Kode CSS) --- */
         .dynamic-island {
-            width: 120px; height: 35px; background: #000;
-            border-radius: 20px; transition: all 0.3s ease-in-out;
-            display: flex; align-items: center; justify-content: center;
+            position: absolute;
+            top: 11px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 30px;
+            background: #000;
+            border-radius: 20px;
+            z-index: 1001;
         }
-        /* Efek saat ditekan/interaksi */
-        .dynamic-island:active { width: 200px; height: 40px; }
 
         /* --- Status Bar --- */
         .status-bar {
             height: 44px; display: flex; justify-content: space-between;
             align-items: center; padding: 0 25px; font-weight: 600; font-size: 14px;
-            position: relative; z-index: 999;
+            position: relative; z-index: 1000;
         }
         .status-right { display: flex; align-items: center; gap: 6px; }
         .bars { display: flex; align-items: flex-end; gap: 1.5px; }
@@ -117,9 +115,7 @@
 <body>
 
 <div class="iphone-screen">
-    <div class="dynamic-island-container">
-        <div class="dynamic-island"></div>
-    </div>
+    <div class="dynamic-island"></div>
 
     <div class="status-bar">
         <span id="top-time">--:--</span>
@@ -175,25 +171,8 @@
         document.getElementById('top-time').innerText = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
         document.getElementById('live-arrival').innerText = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0') + ":" + String(now.getSeconds()).padStart(2, '0');
     }
-
-    function getLocation() {
-        const txt = document.getElementById('txt-lokasi');
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const lat = pos.coords.latitude.toFixed(4);
-                    const lon = pos.coords.longitude.toFixed(4);
-                    txt.innerText = "Area Hutan Napis " + lat + "/" + lon;
-                },
-                (err) => {
-                    txt.innerText = "Area Hutan Napis lot/lat";
-                }
-            );
-        }
-    }
-
     setInterval(updateClock, 1000);
-    window.onload = () => { updateClock(); getLocation(); };
+    window.onload = updateClock;
 </script>
 </body>
 </html>
