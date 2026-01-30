@@ -3,102 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presensi UI Suji - Double Step</title>
+    <title>Presensi Suji - Anti Reset</title>
     <style>
         :root {
             --ios-blue: #007AFF;
             --bg-gradient: linear-gradient(180deg, #A8E6FF 0%, #FFFFFF 40%, #F2F5F9 100%);
             --quote-bg: #E1F5FE; 
         }
-
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        body { margin: 0; background: var(--bg-gradient); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+        .iphone-screen { width: 100%; max-width: 414px; position: relative; padding-bottom: 120px; min-height: 100vh; }
 
-        body {
-            margin: 0; background: #A8E6FF; background: var(--bg-gradient);
-            display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden;
-        }
-
-        .iphone-screen {
-            width: 100%; max-width: 414px; position: relative; padding-bottom: 120px; min-height: 100vh;
-        }
-
-        /* --- Status Bar --- */
-        .status-bar {
-            height: 44px; display: flex; justify-content: space-between;
-            align-items: center; padding: 0 25px; font-weight: 600; font-size: 14px;
-            position: relative; z-index: 1000; margin-top: 5px;
-        }
+        /* Status Bar */
+        .status-bar { height: 44px; display: flex; justify-content: space-between; align-items: center; padding: 0 25px; font-weight: 600; font-size: 14px; margin-top: 5px; }
         .status-right { display: flex; align-items: center; gap: 6px; }
         .bars { display: flex; align-items: flex-end; gap: 1.5px; }
         .bar { width: 3px; background: rgba(0,0,0,0.1); border-radius: 0.5px; }
         .bar.active { background: #000; }
-
-        .wifi-svg { width: 18px; height: 14px; fill: #000; }
         .bat-container { width: 22px; height: 11px; border: 1.1px solid #000; border-radius: 2.5px; position: relative; padding: 1px; }
         .bat-level { height: 100%; width: 90%; background: #000; border-radius: 1px; }
         .bat-tip { width: 1.5px; height: 4px; background: #000; position: absolute; right: -3px; top: 2.5px; }
 
-        /* --- Header --- */
+        /* Card */
         .header { padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; }
-        .user-name { font-size: 20px; font-weight: 800; color: #1c1c1e; }
-        .avatar {
-            width: 45px; height: 45px; background: #9d81ff; color: white;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;
-        }
-
-        /* --- Card Presensi --- */
-        .card {
-            background: white; margin: 0 20px 20px; border-radius: 24px;
-            padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
+        .card { background: white; margin: 0 20px 20px; border-radius: 24px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
         .presensi-info { display: flex; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px; margin-bottom: 12px; }
         .presensi-item { flex: 1; }
-        .presensi-item strong { font-size: 22px; color: #1c1c1e; transition: color 0.3s; }
+        .presensi-item strong { font-size: 22px; color: #1c1c1e; }
         .active-timer { color: var(--ios-blue) !important; }
 
-        .location-box {
-            display: flex; align-items: center; gap: 8px;
-            background: #f8f9fa; padding: 10px 14px; border-radius: 12px;
-            font-size: 12px; color: #666; font-weight: 500;
-        }
+        .location-box { display: flex; align-items: center; gap: 8px; background: #f8f9fa; padding: 10px 14px; border-radius: 12px; font-size: 12px; color: #666; }
         .location-box svg { width: 14px; height: 14px; fill: var(--ios-blue); }
 
-        /* --- Menu Grid --- */
         .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 0 20px; }
         .menu-item { text-align: center; font-size: 11px; font-weight: 700; color: #555; }
-        .icon-box {
-            aspect-ratio: 1/1; border-radius: 18px; display: flex;
-            align-items: center; justify-content: center; margin-bottom: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-        }
+        .icon-box { aspect-ratio: 1/1; border-radius: 18px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
         .icon-box svg { width: 24px; height: 24px; fill: white; }
 
-        .quote-card {
-            margin: 30px 20px; background: var(--quote-bg);
-            padding: 25px; border-radius: 26px; color: #263238;
-            font-style: italic; font-size: 16px; font-weight: 700; text-align: center;
-            border: 2px solid #81D4FA; min-height: 110px; display: flex; align-items: center; justify-content: center;
-        }
+        .quote-card { margin: 30px 20px; background: var(--quote-bg); padding: 25px; border-radius: 26px; color: #263238; font-style: italic; font-size: 16px; font-weight: 700; text-align: center; border: 2px solid #81D4FA; min-height: 110px; display: flex; align-items: center; justify-content: center; }
 
-        /* --- Nav Bawah --- */
-        .bottom-container {
-            position: fixed; bottom: 0; width: 100%; max-width: 414px;
-            background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-top: 1px solid #eee; z-index: 1002;
-        }
+        /* Nav Bawah */
+        .bottom-container { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-top: 1px solid #eee; z-index: 1002; }
         .nav-bar { display: flex; justify-content: space-around; align-items: center; padding: 10px 0 25px; }
-        .nav-item { text-align: center; font-size: 10px; color: #8E8E93; text-decoration: none; font-weight: 600; flex: 1; }
+        .nav-item { text-align: center; font-size: 10px; color: #8E8E93; text-decoration: none; font-weight: 600; flex: 1; cursor: pointer; }
         .nav-item.active { color: var(--ios-blue); }
         .nav-item svg { width: 24px; height: 24px; display: block; margin: 0 auto 4px; fill: currentColor; }
-        
-        .camera-btn {
-            width: 60px; height: 60px; background: var(--ios-blue);
-            border-radius: 20px; margin-top: -45px; display: flex;
-            align-items: center; justify-content: center; border: 4px solid white;
-            box-shadow: 0 5px 15px rgba(0,122,255,0.3);
-            cursor: pointer; transition: transform 0.1s;
-        }
-        .camera-btn:active { transform: scale(0.9); }
-        .camera-btn svg { fill: white; width: 28px; height: 28px; }
+        .camera-btn { width: 60px; height: 60px; background: var(--ios-blue); border-radius: 20px; margin-top: -45px; display: flex; align-items: center; justify-content: center; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,122,255,0.3); cursor: pointer; }
         .copyright { font-size: 10px; color: #bbb; text-align: center; padding-bottom: 10px; margin-top: -10px; }
     </style>
 </head>
@@ -109,7 +59,6 @@
         <span id="top-time">--:--</span>
         <div class="status-right">
             <div class="bars"><div class="bar active" style="height:4px"></div><div class="bar" style="height:6px"></div><div class="bar" style="height:9px"></div><div class="bar" style="height:12px"></div></div>
-            <svg class="wifi-svg" viewBox="0 0 24 24"><path d="M12,2C7.3,2,3.1,3.9,0,7l2,2c2.6-2.6,6.1-4.1,10-4.1s7.4,1.5,10,4.1l2-2C20.9,3.9,16.7,2,12,2z M12,7c-3.5,0-6.6,1.4-8.9,3.7 l2,2C6.9,11.1,9.3,10,12,10s5.1,1.1,6.9,2.7l2-2C18.6,8.4,15.5,7,12,7z M12,12c-2.3,0-4.3,0.9-5.8,2.4l2,2 c1-1,2.3-1.6,3.8-1.6s2.8,0.6,3.8,1.6l2-2C16.3,12.9,14.3,12,12,12z M12,17c-1,0-1.9,0.4-2.6,1.1l2.6,2.6l2.6-2.6 C13.9,17.4,13,17,12,17z"/></svg>
             <div class="bat-container"><div class="bat-level"></div><div class="bat-tip"></div></div>
         </div>
     </div>
@@ -120,18 +69,16 @@
     </div>
 
     <div class="card">
-        <h3 style="margin:0 0 10px; font-size:15px">Presensi hari ini</h3>
         <div class="presensi-info">
             <div class="presensi-item">
                 <small style="color:#aaa">Datang</small><br>
-                <strong id="time-arrival" class="active-timer">00:00:00</strong>
+                <strong id="time-arrival">00:00:00</strong>
             </div>
             <div class="presensi-item" style="text-align:right">
                 <small style="color:#aaa">Pulang</small><br>
-                <strong id="time-departure" style="color:#ddd">--:--:--</strong>
+                <strong id="time-departure">--:--:--</strong>
             </div>
         </div>
-        
         <div class="location-box">
             <svg viewBox="0 0 24 24"><path d="M12,2C8.1,2,5,5.1,5,9c0,5.2,7,13,7,13s7-7.8,7-13C19,5.1,15.9,2,12,2z M12,11.5c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5 s2.5,1.1,2.5,2.5S13.4,11.5,12,11.5z"/></svg>
             <span id="txt-lokasi">Mencari Lokasi GPS...</span>
@@ -149,80 +96,82 @@
 
     <div class="bottom-container">
         <div class="nav-bar">
-            <a class="nav-item active"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Beranda</a>
-            <a class="nav-item"><svg viewBox="0 0 24 24"><path d="M13,3c-4.97,0-9,4.03-9,9H1l3.89,3.89l0.07,0.14L9,12H6c0-3.87,3.13-7,7-7s7,3.13,7,7s-3.13,7-7,7c-1.93,0-3.68-0.79-4.94-2.06l-1.42,1.42C8.27,19.99,10.51,21,13,21c4.97,0,9-4.03,9-9S17.97,3,13,3z"/></svg>Riwayat</a>
-            <div class="camera-btn" id="main-action-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M9 2L7.17 4H4C2.9,4,2,4.9,2,6v12c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V6c0-1.1-0.9-2-2-2h-3.17L15,2H9z"/></svg></div>
-            <a class="nav-item"><svg viewBox="0 0 24 24"><path d="M11.99,2C6.47,2,2,6.48,2,12s4.47,10,9.99,10s10-4.48,10-10S17.52,2,11.99,2z M12,20c-4.42,0-8-3.58-8-8s3.58-8,8-8s8,3.58,8,8S16.42,20,12,20z M12.5,7H11v6l5.2,3.2l0.8,1.2L12.5,14V7z"/></svg>Shift</a>
-            <a class="nav-item"><svg viewBox="0 0 24 24"><path d="M12,12c2.2,0,4-1.8,4-4s-1.8-4-4-4s-4,1.8-4,4S9.8,12,12,12z M12,14c-2.7,0-8,1.3-8,4v2h16v-2C20,15.3,14.7,14,12,14z"/></svg>Akun</a>
+            <div class="nav-item" id="reset-btn"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Beranda</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M13,3c-4.97,0-9,4.03-9,9H1l3.89,3.89l0.07,0.14L9,12H6c0-3.87,3.13-7,7-7s7,3.13,7,7s-3.13,7-7,7c-1.93,0-3.68-0.79-4.94-2.06l-1.42,1.42C8.27,19.99,10.51,21,13,21c4.97,0,9-4.03,9-9S17.97,3,13,3z"/></svg>Riwayat</div>
+            <div class="camera-btn" id="main-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M9 2L7.17 4H4C2.9,4,2,4.9,2,6v12c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V6c0-1.1-0.9-2-2-2h-3.17L15,2H9z"/></svg></div>
+            <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M11.99,2C6.47,2,2,6.48,2,12s4.47,10,9.99,10s10-4.48,10-10S17.52,2,11.99,2z"/></svg>Shift</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12,12c2.2,0,4-1.8,4-4s-1.8-4-4-4s-4,1.8-4,4S9.8,12,12,12z M12,14c-2.7,0-8,1.3-8,4v2h16v-2C20,15.3,14.7,14,12,14z"/></svg>Akun</div>
         </div>
         <div class="copyright">@2026 Presensi Suji Ima Internusa</div>
     </div>
 </div>
 
 <script>
-    const quotes = [
-        "Bersyukur bukan karena semua baik, tapi karena ada kebaikan di setiap hal.",
-        "Disiplin adalah jembatan antara cita-cita dan pencapaian.",
-        "Niatkan langkahmu sebagai ibadah, maka lelahmu menjadi lillah.",
-        "Hargai setiap detik waktumu, karena ia tidak akan pernah kembali."
-    ];
-
-    let clickState = 0; // 0: Awal, 1: Datang Stop, 2: Pulang Jalan
+    // State: 0=Datang Jalan, 1=Datang Stop, 2=Pulang Jalan
+    let state = parseInt(localStorage.getItem('suji_state')) || 0;
+    let lockedArrival = localStorage.getItem('suji_arrival') || "";
+    let lockedDeparture = localStorage.getItem('suji_departure') || "";
 
     function updateTick() {
         const now = new Date();
-        const timeStr = String(now.getHours()).padStart(2, '0') + ":" + 
-                        String(now.getMinutes()).padStart(2, '0') + ":" + 
-                        String(now.getSeconds()).padStart(2, '0');
+        const timeStr = now.getHours().toString().padStart(2,'0') + ":" + 
+                        now.getMinutes().toString().padStart(2,'0') + ":" + 
+                        now.getSeconds().toString().padStart(2,'0');
         
-        document.getElementById('top-time').innerText = timeStr.substring(0, 5);
+        document.getElementById('top-time').innerText = timeStr.substring(0,5);
 
-        if (clickState === 0) {
-            // Jam datang jalan
-            document.getElementById('time-arrival').innerText = timeStr;
-        } else if (clickState === 2) {
-            // Jam pulang jalan
-            document.getElementById('time-departure').innerText = timeStr;
+        const arrEl = document.getElementById('time-arrival');
+        const depEl = document.getElementById('time-departure');
+
+        if (state === 0) {
+            arrEl.innerText = timeStr;
+            arrEl.className = "active-timer";
+            depEl.innerText = "--:--:--";
+            depEl.className = "";
+        } else if (state === 1) {
+            arrEl.innerText = lockedArrival;
+            arrEl.className = "";
+            depEl.innerText = "--:--:--";
+            depEl.className = "";
+        } else if (state === 2) {
+            arrEl.innerText = lockedArrival;
+            arrEl.className = "";
+            depEl.innerText = timeStr;
+            depEl.className = "active-timer";
         }
     }
 
-    document.getElementById('main-action-btn').onclick = function() {
-        const arrivalTxt = document.getElementById('time-arrival');
-        const departureTxt = document.getElementById('time-departure');
-
-        if (clickState === 0) {
-            // TEKAN PERTAMA: Datang Berhenti
-            clickState = 1;
-            arrivalTxt.classList.remove('active-timer');
-            arrivalTxt.style.color = "#1c1c1e"; 
-            alert("Waktu Datang Dikunci. Tekan lagi nanti untuk mulai Pulang.");
-        } 
-        else if (clickState === 1) {
-            // TEKAN KEDUA: Pulang Berjalan
-            clickState = 2;
-            departureTxt.classList.add('active-timer');
-            departureTxt.style.color = "#007AFF";
-            alert("Waktu Pulang Dimulai!");
-        }
-        else {
-            alert("Presensi hari ini sudah selesai!");
+    // Tombol Kamera (UTAMA)
+    document.getElementById('main-btn').onclick = function() {
+        const nowStr = document.getElementById('top-time').innerText + ":" + new Date().getSeconds().toString().padStart(2,'0');
+        
+        if (state === 0) {
+            state = 1;
+            lockedArrival = nowStr;
+            localStorage.setItem('suji_state', 1);
+            localStorage.setItem('suji_arrival', lockedArrival);
+            alert("Datang Terkunci!");
+        } else if (state === 1) {
+            state = 2;
+            localStorage.setItem('suji_state', 2);
+            alert("Pulang Dimulai!");
         }
     };
 
-    function getGPS() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((pos) => {
-                document.getElementById('txt-lokasi').innerText = 
-                    "Area Hutan Napis " + pos.coords.latitude.toFixed(6) + " / " + pos.coords.longitude.toFixed(6);
-            });
+    // Tombol Beranda (RESET)
+    document.getElementById('reset-btn').onclick = function() {
+        if(confirm("Bos yakin mau RESET semua jam?")) {
+            localStorage.clear();
+            state = 0;
+            lockedArrival = "";
+            location.reload();
         }
-    }
+    };
 
     setInterval(updateTick, 1000);
     window.onload = () => {
         updateTick();
-        getGPS();
-        document.getElementById('quote-display').innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+        document.getElementById('quote-display').innerText = '"Tetap semangat dan disiplin, Bos Suji!"';
     };
 </script>
 </body>
