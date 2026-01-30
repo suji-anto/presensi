@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presensi UI Suji - Dynamic Island</title>
+    <title>Presensi UI Suji - Low Signal</title>
     <style>
         :root {
             --ios-blue: #007AFF;
@@ -14,34 +14,18 @@
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
 
         body {
-            margin: 0; 
-            background: #A8E6FF; /* Warna dasar agar tidak zonk */
-            background: var(--bg-gradient);
-            display: flex; 
-            justify-content: center; 
-            min-height: 100vh;
-            overflow-x: hidden;
+            margin: 0; background: #A8E6FF; background: var(--bg-gradient);
+            display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden;
         }
 
         .iphone-screen {
-            width: 100%; 
-            max-width: 414px; 
-            position: relative; 
-            padding-bottom: 120px;
-            min-height: 100vh;
+            width: 100%; max-width: 414px; position: relative; padding-bottom: 120px; min-height: 100vh;
         }
 
         /* --- DYNAMIC ISLAND --- */
         .dynamic-island {
-            position: absolute;
-            top: 11px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 110px;
-            height: 30px;
-            background: #000;
-            border-radius: 20px;
-            z-index: 1001;
+            position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+            width: 110px; height: 30px; background: #000; border-radius: 20px; z-index: 1001;
         }
 
         /* --- Status Bar --- */
@@ -51,9 +35,12 @@
             position: relative; z-index: 1000;
         }
         .status-right { display: flex; align-items: center; gap: 6px; }
+        
+        /* Signal 1 Bar (Kesan Susah Sinyal) */
         .bars { display: flex; align-items: flex-end; gap: 1.5px; }
-        .bar { width: 3px; background: #c5c5c5; border-radius: 0.5px; }
-        .bar.active { background: #000; }
+        .bar { width: 3px; background: rgba(0,0,0,0.1); border-radius: 0.5px; }
+        .bar.active { background: #000; } /* Hanya bar pertama yang aktif */
+
         .wifi-svg { width: 18px; height: 14px; fill: #000; }
         .bat-container { width: 22px; height: 11px; border: 1.1px solid #000; border-radius: 2.5px; position: relative; padding: 1px; }
         .bat-level { height: 100%; width: 90%; background: #000; border-radius: 1px; }
@@ -93,7 +80,6 @@
         }
         .icon-box svg { width: 24px; height: 24px; fill: white; }
 
-        /* --- Quote --- */
         .quote-card {
             margin: 30px 20px; background: var(--quote-bg);
             padding: 28px 22px; border-radius: 26px; color: #263238;
@@ -104,8 +90,7 @@
         /* --- Nav Bawah --- */
         .bottom-container {
             position: fixed; bottom: 0; width: 100%; max-width: 414px;
-            background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-top: 1px solid #eee;
-            z-index: 1002;
+            background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-top: 1px solid #eee; z-index: 1002;
         }
         .nav-bar { display: flex; justify-content: space-around; align-items: center; padding: 10px 0 25px; }
         .nav-item { text-align: center; font-size: 10px; color: #8E8E93; text-decoration: none; font-weight: 600; flex: 1; }
@@ -130,14 +115,19 @@
     <div class="status-bar">
         <span id="top-time">--:--</span>
         <div class="status-right">
-            <div class="bars"><div class="bar active" style="height:4px"></div><div class="bar active" style="height:6px"></div><div class="bar active" style="height:9px"></div><div class="bar" style="height:12px"></div></div>
+            <div class="bars">
+                <div class="bar active" style="height:4px"></div>
+                <div class="bar" style="height:6px"></div>
+                <div class="bar" style="height:9px"></div>
+                <div class="bar" style="height:12px"></div>
+            </div>
             <svg class="wifi-svg" viewBox="0 0 24 24"><path d="M12,2C7.3,2,3.1,3.9,0,7l2,2c2.6-2.6,6.1-4.1,10-4.1s7.4,1.5,10,4.1l2-2C20.9,3.9,16.7,2,12,2z M12,7c-3.5,0-6.6,1.4-8.9,3.7 l2,2C6.9,11.1,9.3,10,12,10s5.1,1.1,6.9,2.7l2-2C18.6,8.4,15.5,7,12,7z M12,12c-2.3,0-4.3,0.9-5.8,2.4l2,2 c1-1,2.3-1.6,3.8-1.6s2.8,0.6,3.8,1.6l2-2C16.3,12.9,14.3,12,12,12z M12,17c-1,0-1.9,0.4-2.6,1.1l2.6,2.6l2.6-2.6 C13.9,17.4,13,17,12,17z"/></svg>
             <div class="bat-container"><div class="bat-level"></div><div class="bat-tip"></div></div>
         </div>
     </div>
 
     <div class="header">
-        <div><div style="color:#888; font-size:13px;">Hallo Bos</div><div class="user-name">SUJIANTO <small style="font-weight:400">(Owner II)</small></div></div>
+        <div><div style="color:#888; font-size:13px;">Assalamualaikum...</div><div class="user-name">SUJIANTO <small style="font-weight:400">(Owner II)</small></div></div>
         <div class="avatar">SJ</div>
     </div>
 
@@ -155,13 +145,13 @@
     </div>
 
     <div class="menu-grid">
-        <div class="menu-item"><div class="icon-box" style="background:#FF9500;"><svg viewBox="0 0 24 24"><path d="M14,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8L14,2z M16,18H8v-2h8V18z M16,14H8v-2h8V14z"/></svg></div>Izin</div>
+        <div class="menu-item"><div class="icon-box" style="background:#FF9500;"><svg viewBox="0 0 24 24"><path d="M14,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8L14,2z M16,18H8v-2h8V18z M16,14H8v-2h8V14z"/></svg></div>Tugas</div>
         <div class="menu-item"><div class="icon-box" style="background:#34C759;"><svg viewBox="0 0 24 24"><path d="M21,18v1c0,1.1-0.9,2-2,2H5c-1.1,0-2-0.9-2-2V5c0-1.1,0.9-2,2-2h14c1.1,0,2,0.9,2,2v1h-9c-1.1,0-2,0.9-2,2v8c0,1.1,0.9,2,2,2H21z"/></svg></div>Saldo</div>
         <div class="menu-item"><div class="icon-box" style="background:#5856D6;"><svg viewBox="0 0 24 24"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18z"/></svg></div>Paypall</div>
         <div class="menu-item"><div class="icon-box" style="background:#FF2D55;"><svg viewBox="0 0 24 24"><path d="M20,6h-8l-2-2H4C2.9,4,2,4.9,2,6v12c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V8C22,6.9,21.1,6,20,6z"/></svg></div>Aset</div>
     </div>
 
-    <div class="quote-card">"Hidup Lah Kamu Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan"</div>
+    <div class="quote-card">"Hiduplah Kamu Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan"</div>
 
     <div class="bottom-container">
         <div class="nav-bar">
@@ -195,7 +185,7 @@
                     txt.innerText = "Area Hutan Napis " + lat + " / " + lon;
                 },
                 (err) => {
-                    txt.innerText = "Area Hutan Napis (GPS Nonaktif)";
+                    txt.innerText = "Area Hutan Napis (Low Signal)";
                 },
                 { enableHighAccuracy: true }
             );
