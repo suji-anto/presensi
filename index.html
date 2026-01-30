@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iPhone Presensi UI</title>
+    <title>Presensi UI</title>
     <style>
         :root {
             --ios-blue: #007AFF;
@@ -21,19 +21,18 @@
             background: var(--bg-gradient);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Container Utama (Simulasi Layar iPhone) */
         .iphone-screen {
             width: 100%;
-            max-width: 414px; /* Ukuran lebar iPhone standar */
-            background: transparent;
+            max-width: 414px;
             position: relative;
-            padding-bottom: 100px;
+            padding-bottom: 120px; /* Ruang ekstra untuk nav + copyright */
         }
 
-        /* Status Bar & Dynamic Island */
+        /* Status Bar (Tanpa Dynamic Island) */
         .status-bar {
             height: 44px;
             display: flex;
@@ -44,20 +43,9 @@
             font-weight: 600;
         }
 
-        .dynamic-island {
-            width: 110px;
-            height: 30px;
-            background: black;
-            border-radius: 20px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 11px;
-        }
-
-        /* Header Section */
+        /* Header */
         .header {
-            padding: 40px 25px 20px;
+            padding: 30px 25px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -67,20 +55,14 @@
         .user-name { font-size: 22px; font-weight: 800; margin-top: 4px; }
         
         .avatar {
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             background: #9d81ff;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 18px;
         }
 
-        /* Card Presensi */
+        /* Card */
         .card {
             background: white;
             margin: 0 20px 20px;
@@ -89,7 +71,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        .card h3 { margin: 0 0 15px; font-size: 16px; color: #333; }
+        .card h3 { margin: 0 0 15px; font-size: 16px; }
         
         .presensi-info {
             display: flex;
@@ -102,89 +84,73 @@
         .presensi-item strong { font-size: 20px; color: #222; }
 
         .more-btn {
-            text-align: center;
-            padding-top: 15px;
-            color: var(--ios-blue);
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
+            text-align: center; padding-top: 15px;
+            color: var(--ios-blue); font-weight: 600; font-size: 14px;
         }
 
-        /* Menu Grid */
+        /* Menu */
         .menu-section { padding: 0 20px; margin-top: 25px; }
-        .menu-section h4 { margin-bottom: 15px; color: #444; }
-        
         .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
         }
 
-        .menu-item { text-align: center; font-size: 11px; color: #555; font-weight: 500; }
+        .menu-item { text-align: center; font-size: 11px; color: #555; }
         
         .icon-box {
-            aspect-ratio: 1/1;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 8px;
+            aspect-ratio: 1/1; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; margin-bottom: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        /* Quote Section */
+        /* Quote */
         .quote-card {
             margin: 30px 20px;
             background: #4A90E2;
             padding: 20px;
             border-radius: 20px;
             color: white;
-            position: relative;
-            font-style: italic;
-            font-size: 14px;
-            line-height: 1.6;
+            font-style: italic; font-size: 14px; line-height: 1.6;
         }
 
-        /* Copyright Text */
-        .copyright {
-            text-align: center;
-            font-size: 12px;
-            color: #888;
-            margin: 10px 0 30px;
-        }
-
-        /* Bottom Navigation */
-        .nav-bar {
+        /* Fixed Bottom Nav & Copyright */
+        .bottom-container {
             position: fixed;
             bottom: 0;
             width: 100%;
             max-width: 414px;
             background: rgba(255,255,255,0.9);
             backdrop-filter: blur(10px);
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        .nav-bar {
             display: flex;
             justify-content: space-around;
-            padding: 10px 0 25px;
-            border-top: 1px solid #eee;
+            padding-bottom: 5px;
         }
 
         .nav-item { text-align: center; font-size: 10px; color: #888; }
-        .nav-item.active { color: var(--ios-blue); }
         .nav-icon { font-size: 20px; margin-bottom: 3px; }
 
         .camera-btn {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             background: var(--ios-blue);
             border-radius: 20px;
             margin-top: -40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; color: white;
             box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
             border: 4px solid white;
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 10px;
+            color: #aaa;
+            padding: 10px 0 15px;
+            background: #fff;
         }
     </style>
 </head>
@@ -192,8 +158,7 @@
 
 <div class="iphone-screen">
     <div class="status-bar">
-        <span>8:27</span>
-        <div class="dynamic-island"></div>
+        <span id="current-time-status">00:00</span>
         <div style="display: flex; gap: 5px;">
             <span>📶</span>
             <span>🔋 92%</span>
@@ -213,7 +178,7 @@
         <div class="presensi-info">
             <div class="presensi-item">
                 <small>Datang</small>
-                <strong>06:12:34</strong>
+                <strong id="jam-datang">00:00:00</strong>
             </div>
             <div class="presensi-item" style="text-align: right;">
                 <small>Pulang</small>
@@ -224,7 +189,6 @@
     </div>
 
     <div class="menu-section">
-        <h4>Menu</h4>
         <div class="menu-grid">
             <div class="menu-item"><div class="icon-box" style="background: #FF9F0A;">📋</div>Izin</div>
             <div class="menu-item"><div class="icon-box" style="background: #007AFF;">💼</div>Saldo</div>
@@ -236,19 +200,38 @@
     <div class="quote-card">
         "Hidup Lah Kamu Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan"
     </div>
+</div>
 
-    <div class="copyright">
-        @2026 Presensi Suji Ima Internusa
-    </div>
-
+<div class="bottom-container">
     <div class="nav-bar">
-        <div class="nav-item active"><div class="nav-icon">🏠</div>Beranda</div>
+        <div class="nav-item" style="color: #007AFF;"><div class="nav-icon">🏠</div>Beranda</div>
         <div class="nav-item"><div class="nav-icon">🕒</div>Riwayat</div>
         <div class="camera-btn">📷</div>
         <div class="nav-item"><div class="nav-icon">⏰</div>Shift</div>
         <div class="nav-item"><div class="nav-icon">👤</div>Akun</div>
     </div>
+    <div class="copyright">
+        @2026 Presensi Suji Ima Internusa
+    </div>
 </div>
+
+<script>
+    function updateClock() {
+        const now = new Date();
+        
+        // Format Jam:Menit untuk Status Bar
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('current-time-status').textContent = `${hours}:${minutes}`;
+
+        // Format Jam:Menit:Detik untuk Jam Datang
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('jam-datang').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    // Jalankan saat pertama kali dibuka
+    updateClock();
+</script>
 
 </body>
 </html>
