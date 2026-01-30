@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presensi UI Suji - Lokasi Aktif</title>
+    <title>Presensi UI Suji - Dynamic Island</title>
     <style>
         :root {
             --ios-blue: #007AFF;
@@ -20,12 +20,28 @@
 
         .iphone-screen {
             width: 100%; max-width: 414px; position: relative; padding-bottom: 120px;
+            background: #fff; overflow: hidden;
         }
+
+        /* --- Dynamic Island --- */
+        .dynamic-island-container {
+            position: absolute; top: 11px; left: 50%;
+            transform: translateX(-50%); width: 100%;
+            display: flex; justify-content: center; z-index: 1000;
+        }
+        .dynamic-island {
+            width: 120px; height: 35px; background: #000;
+            border-radius: 20px; transition: all 0.3s ease-in-out;
+            display: flex; align-items: center; justify-content: center;
+        }
+        /* Efek saat ditekan/interaksi */
+        .dynamic-island:active { width: 200px; height: 40px; }
 
         /* --- Status Bar --- */
         .status-bar {
             height: 44px; display: flex; justify-content: space-between;
             align-items: center; padding: 0 25px; font-weight: 600; font-size: 14px;
+            position: relative; z-index: 999;
         }
         .status-right { display: flex; align-items: center; gap: 6px; }
         .bars { display: flex; align-items: flex-end; gap: 1.5px; }
@@ -44,7 +60,7 @@
             border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;
         }
 
-        /* --- Card Presensi + Lokasi --- */
+        /* --- Card Presensi --- */
         .card {
             background: white; margin: 0 20px 20px; border-radius: 24px;
             padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
@@ -70,12 +86,12 @@
         }
         .icon-box svg { width: 24px; height: 24px; fill: white; }
 
-        /* --- Kata Mutiara (Jumbo) --- */
+        /* --- Quote --- */
         .quote-card {
             margin: 30px 20px; background: var(--quote-bg);
             padding: 28px 22px; border-radius: 26px; color: #263238;
             font-style: italic; font-size: 17px; font-weight: 700; text-align: center;
-            border: 2px solid #81D4FA; box-shadow: 0 6px 20px rgba(0,122,255,0.1);
+            border: 2px solid #81D4FA;
         }
 
         /* --- Nav Bawah --- */
@@ -95,13 +111,16 @@
             box-shadow: 0 5px 15px rgba(0,122,255,0.3);
         }
         .camera-btn svg { fill: white; width: 28px; height: 28px; }
-
         .copyright { font-size: 10px; color: #bbb; text-align: center; padding-bottom: 10px; margin-top: -10px; }
     </style>
 </head>
 <body>
 
 <div class="iphone-screen">
+    <div class="dynamic-island-container">
+        <div class="dynamic-island"></div>
+    </div>
+
     <div class="status-bar">
         <span id="top-time">--:--</span>
         <div class="status-right">
@@ -112,7 +131,7 @@
     </div>
 
     <div class="header">
-        <div><div style="color:#888; font-size:13px;">Assalamualaikum...</div><div class="user-name">SUJIANTO <small style="font-weight:400">(Owner II)</small></div></div>
+        <div><div style="color:#888; font-size:13px;">Hallo Bos</div><div class="user-name">SUJIANTO <small style="font-weight:400">(Owner II)</small></div></div>
         <div class="avatar">SJ</div>
     </div>
 
@@ -130,13 +149,13 @@
     </div>
 
     <div class="menu-grid">
-        <div class="menu-item"><div class="icon-box" style="background:#FF9500;"><svg viewBox="0 0 24 24"><path d="M14,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8L14,2z M16,18H8v-2h8V18z M16,14H8v-2h8V14z"/></svg></div>Tugas</div>
+        <div class="menu-item"><div class="icon-box" style="background:#FF9500;"><svg viewBox="0 0 24 24"><path d="M14,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8L14,2z M16,18H8v-2h8V18z M16,14H8v-2h8V14z"/></svg></div>Izin</div>
         <div class="menu-item"><div class="icon-box" style="background:#34C759;"><svg viewBox="0 0 24 24"><path d="M21,18v1c0,1.1-0.9,2-2,2H5c-1.1,0-2-0.9-2-2V5c0-1.1,0.9-2,2-2h14c1.1,0,2,0.9,2,2v1h-9c-1.1,0-2,0.9-2,2v8c0,1.1,0.9,2,2,2H21z"/></svg></div>Saldo</div>
         <div class="menu-item"><div class="icon-box" style="background:#5856D6;"><svg viewBox="0 0 24 24"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18z"/></svg></div>Paypall</div>
         <div class="menu-item"><div class="icon-box" style="background:#FF2D55;"><svg viewBox="0 0 24 24"><path d="M20,6h-8l-2-2H4C2.9,4,2,4.9,2,6v12c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V8C22,6.9,21.1,6,20,6z"/></svg></div>Aset</div>
     </div>
 
-    <div class="quote-card">"Hiduplah Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan"</div>
+    <div class="quote-card">"Hidup Lah Kamu Bukan Dimana kamu Mampu Di Tempat Itu, Tapi Dimana Kamu Dihargai Dan dibutuhkan"</div>
 
     <div class="bottom-container">
         <div class="nav-bar">
@@ -151,14 +170,12 @@
 </div>
 
 <script>
-    // Update Jam
     function updateClock() {
         const now = new Date();
         document.getElementById('top-time').innerText = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
         document.getElementById('live-arrival').innerText = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0') + ":" + String(now.getSeconds()).padStart(2, '0');
     }
 
-    // Ambil Lokasi Otomatis (Dibuat agar tidak menimpa teks instruksi Anda)
     function getLocation() {
         const txt = document.getElementById('txt-lokasi');
         if (navigator.geolocation) {
@@ -166,24 +183,17 @@
                 (pos) => {
                     const lat = pos.coords.latitude.toFixed(4);
                     const lon = pos.coords.longitude.toFixed(4);
-                    // Menampilkan input Anda diikuti koordinat asli
                     txt.innerText = "Area Hutan Napis " + lat + "/" + lon;
-                    txt.style.color = "#34C759";
                 },
                 (err) => {
-                    // Tetap menampilkan teks instruksi jika GPS gagal
                     txt.innerText = "Area Hutan Napis lot/lat";
-                    txt.style.color = "#FF3B30";
                 }
             );
         }
     }
 
     setInterval(updateClock, 1000);
-    window.onload = () => {
-        updateClock();
-        getLocation();
-    };
+    window.onload = () => { updateClock(); getLocation(); };
 </script>
 </body>
 </html>
