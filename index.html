@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Presensi Suji - Anti Reset</title>
     <style>
         :root {
@@ -12,17 +12,7 @@
         }
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
         body { margin: 0; background: var(--bg-gradient); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
-        .iphone-screen { width: 100%; max-width: 414px; position: relative; padding-bottom: 120px; min-height: 100vh; }
-
-        /* Status Bar */
-        .status-bar { height: 44px; display: flex; justify-content: space-between; align-items: center; padding: 0 25px; font-weight: 600; font-size: 14px; margin-top: 5px; }
-        .status-right { display: flex; align-items: center; gap: 6px; }
-        .bars { display: flex; align-items: flex-end; gap: 1.5px; }
-        .bar { width: 3px; background: rgba(0,0,0,0.1); border-radius: 0.5px; }
-        .bar.active { background: #000; }
-        .bat-container { width: 22px; height: 11px; border: 1.1px solid #000; border-radius: 2.5px; position: relative; padding: 1px; }
-        .bat-level { height: 100%; width: 90%; background: #000; border-radius: 1px; }
-        .bat-tip { width: 1.5px; height: 4px; background: #000; position: absolute; right: -3px; top: 2.5px; }
+        .iphone-screen { width: 100%; max-width: none; position: relative; padding-bottom: 120px; min-height: 100vh; }
 
         /* Card */
         .header { padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; }
@@ -33,7 +23,9 @@
         .active-timer { color: var(--ios-blue) !important; }
 
         .location-box { display: flex; align-items: center; gap: 8px; background: #f8f9fa; padding: 10px 14px; border-radius: 12px; font-size: 12px; color: #666; }
-        .location-box svg { width: 14px; height: 14px; fill: var(--ios-blue); }
+        .location-box svg { width: 14px; height: 14px; fill: var(--ios-blue); flex: 0 0 auto; }
+        .location-details { min-width: 0; overflow-wrap: anywhere; line-height: 1.45; }
+        .location-details a { color: var(--ios-blue); text-decoration: none; font-weight: 600; margin-left: 4px; }
 
         .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 0 20px; }
         .menu-item { text-align: center; font-size: 11px; font-weight: 700; color: #555; }
@@ -43,7 +35,7 @@
         .quote-card { margin: 30px 20px; background: var(--quote-bg); padding: 25px; border-radius: 26px; color: #263238; font-style: italic; font-size: 16px; font-weight: 700; text-align: center; border: 2px solid #81D4FA; min-height: 110px; display: flex; align-items: center; justify-content: center; }
 
         /* Nav Bawah */
-        .bottom-container { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-top: 1px solid #eee; z-index: 1002; }
+        .bottom-container { position: fixed; bottom: 0; left: 0; width: 100%; max-width: none; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-top: 1px solid #eee; z-index: 1002; }
         .nav-bar { display: flex; justify-content: space-around; align-items: center; padding: 10px 0 25px; }
         .nav-item { text-align: center; font-size: 10px; color: #8E8E93; text-decoration: none; font-weight: 600; flex: 1; cursor: pointer; }
         .nav-item.active { color: var(--ios-blue); }
@@ -55,14 +47,6 @@
 <body>
 
 <div class="iphone-screen">
-    <div class="status-bar">
-        <span id="top-time">--:--</span>
-        <div class="status-right">
-            <div class="bars"><div class="bar active" style="height:4px"></div><div class="bar" style="height:6px"></div><div class="bar" style="height:9px"></div><div class="bar" style="height:12px"></div></div>
-            <div class="bat-container"><div class="bat-level"></div><div class="bat-tip"></div></div>
-        </div>
-    </div>
-
     <div class="header">
         <div><div style="color:#888; font-size:13px;">Hallo Bos</div><div class="user-name">SUJIANTO <small style="font-weight:400">(Owner II)</small></div></div>
         <div class="avatar">SJ</div>
@@ -81,7 +65,7 @@
         </div>
         <div class="location-box">
             <svg viewBox="0 0 24 24"><path d="M12,2C8.1,2,5,5.1,5,9c0,5.2,7,13,7,13s7-7.8,7-13C19,5.1,15.9,2,12,2z M12,11.5c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5 s2.5,1.1,2.5,2.5S13.4,11.5,12,11.5z"/></svg>
-            <span id="txt-lokasi">Mencari Lokasi GPS...</span>
+            <span class="location-details" id="txt-lokasi" aria-live="polite">Meminta izin lokasi GPS...</span>
         </div>
     </div>
 
@@ -118,8 +102,6 @@
                         now.getMinutes().toString().padStart(2,'0') + ":" + 
                         now.getSeconds().toString().padStart(2,'0');
         
-        document.getElementById('top-time').innerText = timeStr.substring(0,5);
-
         const arrEl = document.getElementById('time-arrival');
         const depEl = document.getElementById('time-departure');
 
@@ -168,10 +150,60 @@
         }
     };
 
-    setInterval(updateTick, 1000);
+
+    // Lokasi GPS realtime melalui Geolocation API browser.
+    // Browser harus memberi izin lokasi dan halaman dibuka melalui HTTPS atau localhost.
+    let gpsWatchId = null;
+
+    function startLiveGPS() {
+        const locationEl = document.getElementById('txt-lokasi');
+
+        if (!('geolocation' in navigator)) {
+            locationEl.textContent = 'Browser ini tidak mendukung GPS/lokasi.';
+            return;
+        }
+
+        locationEl.textContent = 'Meminta izin akses lokasi...';
+
+        gpsWatchId = navigator.geolocation.watchPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const accuracy = Math.round(position.coords.accuracy);
+                const updatedAt = new Date(position.timestamp).toLocaleTimeString('id-ID');
+
+                locationEl.innerHTML =
+                    'Lokasi aktif • ' + lat.toFixed(6) + ', ' + lon.toFixed(6) +
+                    ' • Akurasi ±' + accuracy + ' m • ' + updatedAt +
+                    ' <a href="https://www.google.com/maps?q=' + lat + ',' + lon +
+                    '" target="_blank" rel="noopener">Lihat peta</a>';
+            },
+            function(error) {
+                let message = 'Lokasi GPS tidak dapat diakses.';
+                if (error.code === error.PERMISSION_DENIED) {
+                    message = 'Izin lokasi ditolak. Aktifkan izin lokasi untuk situs ini di pengaturan browser.';
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    message = 'Posisi belum tersedia. Aktifkan layanan lokasi/GPS dan coba di area terbuka.';
+                } else if (error.code === error.TIMEOUT) {
+                    message = 'Waktu mencari lokasi habis. Sedang mencoba kembali...';
+                }
+                locationEl.textContent = message;
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 20000
+            }
+        );
+    }
+
+    // Memulai pembaruan posisi saat halaman dibuka.
+    window.addEventListener('load', startLiveGPS);
+
+        setInterval(updateTick, 1000);
     window.onload = () => {
         updateTick();
-        document.getElementById('quote-display').innerText = '"Tetap semangat dan disiplin, Bos Suji!"';
+        document.getElementById('quote-display').innerText = '"Intrufeksi diri dan berani berkata maaf ketika kita salah"';
     };
 </script>
 </body>
